@@ -59,7 +59,7 @@ else:
     print('Длина третьей стороны:         {:.7g}'.format(len_ac))
     print('Длина высоты из большого угла: {:.7g}'.format(h))
 
-    eps = m.e**-8
+    eps = m.exp(-8)
 
     if abs(len_ab - len_ac) <= eps or abs(len_ac - len_bc) <= eps or abs(len_bc - len_ab) <= eps:
         print('Заданный треугольник равнобедренный')

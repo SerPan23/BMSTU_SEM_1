@@ -74,7 +74,7 @@ else:
     dot_vec_comp_3 = (xc - x) * (ya - yc) - (yc - y) * (xa - xc)
 
     if dot_vec_comp_1 >= 0 and dot_vec_comp_2 >= 0 and dot_vec_comp_3 >= 0 \
-            or dot_vec_comp_1 <= 0 and dot_vec_comp_2 <= 0 and dot_vec_comp_3 <= 0:
+            or dot_vec_comp_1 < 0 and dot_vec_comp_2 < 0 and dot_vec_comp_3 < 0:
         a_dot_vec_coords_x = (x - xa)
         a_dot_vec_coords_y = (y - ya)
         b_dot_vec_coords_x = (x - xb)

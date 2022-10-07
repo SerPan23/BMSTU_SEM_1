@@ -3,7 +3,8 @@
 
 # Программа, которая для заданных функций (h1 = a^2 + 4sin(a) и
 # h2 = e^a + e^(-1.5 * a) - 4) выводит таблицу значений этих
-# функций на некотором отрезке. Запрашивает кол-во засечек и строит график одной из них (h1).
+# функций на некотором отрезке. Запрашивает кол-во засечек (от 4 до 8)
+# и строит график одной из них (h1).
 
 import math as m
 
@@ -42,8 +43,10 @@ for _ in range(n):
     h1_min = min(h1_min, h1)
     h1_max = max(h1_max, h1)
     h2_min = min(h2_min, h2)
-
-    print(f'| {a:^12.5g} | {h1:^12.5g} | {h2:^12.5g} |')
+    if abs(a) < eps:
+        print(f'| {0.0:^12.5g} | {h1:^12.5g} | {h2:^12.5g} |')
+    else:
+        print(f'| {a:^12.5g} | {h1:^12.5g} | {h2:^12.5g} |')
     a += step_a
 print("-" * 46, end='\n\n')
 
@@ -77,7 +80,7 @@ for i in range(scale):
 print(chart_header)
 
 # количества пробелов до OX
-ox = 12 + (int(point_scale * (0 - h1_min)) - 1)
+ox = 14 + (int(point_scale * (0 - h1_min)) - 1)
 
 a = start_a
 
@@ -92,7 +95,10 @@ for _ in range(n):
 
     # график пересекает ОX
     if h1_min <= 0 <= h1_max:
-        s = f'{a:<12.5g}|' + ' ' * spaces_before + '*' + ' ' * spaces_after
+        if abs(a) < eps:
+            s = f'{0.0:<12.5g}|' + ' ' * spaces_before + '*' + ' ' * spaces_after
+        else:
+            s = f'{a:<12.5g}|' + ' ' * spaces_before + '*' + ' ' * spaces_after
         if s[ox] != '*':
             s = s[:ox] + '|' + s[ox + 1:]
         print(s)

@@ -102,7 +102,7 @@ for _ in range(n):
         if s[ox] != '*':
             s = s[:ox] + '|' + s[ox + 1:]
         print(s)
-    # график непересекает ОX
+    # график не пересекает ОX
     else:
         if abs(a) < eps:
             print(f'{0.0:<12.5g}|' + ' ' * spaces_before + '*' + ' ' * spaces_after)

@@ -50,9 +50,9 @@ else:
     # индекс окончания
     finish_i = -1
     # ширина таблицы
-    table_width = 12 * 3 + 4
+    table_width = 12 * 3 + 10
     print('-' * table_width)
-    print(f'| {"№ итерации":^10} | {"t":^10} | {"s":^10} |')
+    print(f'| {"№ итерации":^12} | {"t":^12} | {"s":^12} |')
     print('|' + '-' * (table_width - 2) + '|')
     for i in range(iter_count):
 
@@ -71,7 +71,7 @@ else:
         z += current
 
         if i % step == 0:
-            print(f'| {i + 1:^10.5g} | {current:^10.5g} | {z:^10.5g} |')
+            print(f'| {i + 1:^12.5g} | {current:^12.5g} | {z:^12.5g} |')
 
         if abs(current) <= eps:
             finish_i = i + 1

@@ -58,12 +58,12 @@ else:
 
         # числитель
         numerator = 1
-        for j in range(1, (2 * i - 1) + 1):
+        for j in range(1, (2 * i - 1) + 1, 2):
             numerator *= j
 
         # знаменатель
         denominator = 1
-        for j in range(1, 2 * i + 1):
+        for j in range(2, 2 * i + 1, 2):
             denominator *= j
 
         current = (-1) ** i * (numerator / denominator) * x ** i

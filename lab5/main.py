@@ -44,6 +44,9 @@ while True:
 # текущее значение
 current = 1
 
+# для дроби
+fract = 1
+
 if abs(current) <= eps:
     print('Сумма бесконечного ряда - 0, вычислена за  1 итерацию.')
 else:
@@ -58,23 +61,17 @@ else:
     print('|' + '-' * (table_width - 2) + '|')
     for i in range(iter_count):
 
-        # числитель
-        numerator = 1
-        for j in range(1, (2 * i - 1) + 1, 2):
-            numerator *= j
-
-        # знаменатель
-        denominator = 1
-        for j in range(2, 2 * i + 1, 2):
-            denominator *= j
-
         # замена степени на умножение, чтобы проверить переполнение
-        tmp = x
+        tmp = 1
         for j in range(i):
             tmp *= x
 
-        # current = (-1) ** i * (numerator / denominator) * x ** i
-        current = (-1) ** i * (numerator / denominator) * tmp
+        if i > 0:
+            fract *= (2*i-1)
+            fract /= 2 * i
+            fract *= -1
+
+        current = fract * tmp
 
         z += current
 

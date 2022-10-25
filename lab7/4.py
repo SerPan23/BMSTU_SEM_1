@@ -16,7 +16,7 @@ for i in range(n):
 for i in range(n):
     tmp = ''                                        # хранение временной строки
     for j in range(len(a[i])):
-        if 'A' <= a[i][j] <= 'Z':
+        if a[i][j] in 'AEIOUY':
             tmp += a[i][j].lower()
         else:
             tmp += a[i][j]

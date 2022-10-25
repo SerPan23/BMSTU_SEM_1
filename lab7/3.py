@@ -16,7 +16,12 @@ max_el = ''                                         # максимальный �
 flag = False                                        # флаг есть ли такой элемент
 
 for i in range(n):
-    if a[i].isalpha() and len(max_el) < len(a[i]):
+    f = True                                        # флаг подходит ли элемент под критерии
+    for j in range(len(a[i])):
+        if a[i][j] in '0123456789':
+            f = False
+            break
+    if f and len(max_el) < len(a[i]):
         max_el = a[i]
         flag = True
 

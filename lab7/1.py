@@ -17,8 +17,8 @@ count = 0                   # количество нечетных элемен
 for i in range(n):
     if a[i] % 2 != 0:
         count += 1
-        continue
-    a[i - count] = a[i]
+    else:
+        a[i - count] = a[i]
 
 a = a[:n - count]           # удаление хвоста
 

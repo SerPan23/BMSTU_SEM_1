@@ -6,6 +6,11 @@
 row_count = int(input('Введите количество строк: '))
 column_count = int(input('Введите количество столбцов: '))
 
+while row_count <= 0 or column_count <= 0:
+    print('Ошибка размер должен быть больше 0')
+    row_count = int(input('Введите количество строк: '))
+    column_count = int(input('Введите количество столбцов: '))
+
 matrix = [[0]*column_count for _ in range(row_count)]
 
 for i in range(row_count):

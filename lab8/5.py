@@ -14,16 +14,16 @@ for i in range(n):
     for j in range(n):
         matrix[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
-max_el = matrix[0][n-1]
-flag_max = False
+max_el = matrix[0][n-1]                     # максимальный элемент
+flag_max = False                            # нашли ли максимум
 for i in range(n):
     for j in range(i+1, n):
         if max_el < matrix[i][j]:
             flag_max = True
             max_el = matrix[i][j]
 
-min_el = matrix[n-1][n-1]
-flag_min = False
+min_el = matrix[n-1][n-1]                   # минимальный элемент
+flag_min = False                            # нашли ли минимальный элемент
 for i in range(n):
     for j in range(i):
         if min_el > matrix[i][n-1-j]:

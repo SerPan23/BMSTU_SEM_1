@@ -17,8 +17,8 @@ for i in range(row_count):
         matrix[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
 
-max_column_ind = -1
-min_column_ind = -1
+max_column_ind = -1                     # максимальный нужный столбец
+min_column_ind = -1                     # минимальный нужный столбец
 max_sum = 0
 min_sum = 0
 

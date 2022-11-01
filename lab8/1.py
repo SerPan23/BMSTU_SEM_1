@@ -15,8 +15,8 @@ for i in range(row_count):
     for j in range(column_count):
         matrix[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
-need_row_ind = -1
-max_count = 0
+need_str_ind = -1            # нужная строка
+max_count = 0               # макс количество
 
 for i in range(row_count):
     count = 0
@@ -28,11 +28,11 @@ for i in range(row_count):
         need_str_ind = i
         max_count = count
 
-if need_row_ind == -1:
+if need_str_ind == -1:
     print('Нужая строка не найдена')
 else:
-    print(f'Строка с наибольшим количеством четных элементов имеет индекс = {need_row_ind}')
+    print(f'Строка с наибольшим количеством четных элементов имеет индекс = {need_str_ind}')
     print('Элементы данной строки: ')
-    for j in range(len(matrix[need_row_ind])):
-        print(f'{j+1}-й элемент: {matrix[need_row_ind][j]}')
+    for j in range(len(matrix[need_str_ind])):
+        print(f'{j+1}-й элемент: {matrix[need_str_ind][j]}')
 

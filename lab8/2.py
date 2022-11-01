@@ -18,8 +18,8 @@ for i in range(row_count):
         matrix[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
 
-max_str_ind = -1
-min_str_ind = -1
+max_str_ind = -1                # максимальная нужная строка
+min_str_ind = -1                # минимальная нужная строка
 max_count = 0
 min_count = -1
 
@@ -40,7 +40,7 @@ for i in range(row_count):
         max_count = count
         max_str_ind = i
 
-if max_str_ind == 1 or min_str_ind == -1:
+if max_str_ind == -1 or min_str_ind == -1:
     print('Нужные строки не найдены')
 else:
     matrix[max_str_ind], matrix[min_str_ind] = matrix[min_str_ind], matrix[max_str_ind]

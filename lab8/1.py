@@ -16,7 +16,7 @@ for i in range(row_count):
         matrix[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
 need_str_ind = -1            # нужная строка
-max_count = 0               # макс количество
+max_count = 0                # макс количество
 
 for i in range(row_count):
     count = 0

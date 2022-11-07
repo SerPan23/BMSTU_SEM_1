@@ -49,9 +49,10 @@ for j in range(fn):
     tmp += f'{j+1:^16}|'
 tmp += f'{"AV":^16}|'
 tmp += f'{"L":^16}|'
-print('-'*73)
+width = len(tmp)
+print('-' * width)
 print(tmp)
-print('-'*73)
+print('-' * width)
 for i in range(dn):
     tmp = f'{i+1:^4}|'
     for j in range(fn):
@@ -62,4 +63,4 @@ for i in range(dn):
         tmp += f'{"Неопределенно":^16}|'
     tmp += f'{l[i]:^16.5g}|'
     print(tmp)
-print('-' * 73)
+print('-' * width)

@@ -22,7 +22,7 @@ for i in range(z):
                 int(input(f'Введите элемент с z = {i+1} и y = {j+1}: и x = {k+1}: '))
 
 ind = int(input('Введите индекс среза матрицы: '))
-while 0 < ind <= y:
+while not(0 < ind <= y):
     print('Индекс среза матрицы должен быть от 1 до y')
     ind = int(input('Введите индекс среза матрицы: '))
 

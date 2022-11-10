@@ -13,13 +13,13 @@ while x <= 0 or y <= 0 or z <= 0:
     y = int(input('Введите y матрицы: '))
     z = int(input('Введите z матрицы: '))
 
-matrix = [[[0]*x for _ in range(y)] for _ in range(z)]
+matrix = [[[0.0]*x for _ in range(y)] for _ in range(z)]
 
 for i in range(z):
     for j in range(y):
         for k in range(x):
             matrix[i][j][k] = \
-                int(input(f'Введите элемент с z = {i+1} и y = {j+1}: и x = {k+1}: '))
+                float(input(f'Введите элемент с z = {i+1} и y = {j+1}: и x = {k+1}: '))
 
 ind = int(input('Введите индекс среза матрицы: '))
 while not(0 < ind <= y):

@@ -13,20 +13,20 @@ while row_count <= 0 or column_count <= 0:
     row_count = int(input('Введите количество строк матриц D и Z: '))
     column_count = int(input('Введите количество столбцов матриц D и Z: '))
 
-matrix_d = [[0]*column_count for _ in range(row_count)]
+matrix_d = [[0.0]*column_count for _ in range(row_count)]
 
 print('Введите элементы матрицы D:')
 for i in range(row_count):
     for j in range(column_count):
-        matrix_d[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
+        matrix_d[i][j] = float(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
 
-matrix_z = [[0]*column_count for _ in range(row_count)]
+matrix_z = [[0.0]*column_count for _ in range(row_count)]
 
 print('Введите элементы матрицы Z:')
 for i in range(row_count):
     for j in range(column_count):
-        matrix_z[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
+        matrix_z[i][j] = float(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
 
 print('Матрица Z:')
@@ -40,7 +40,7 @@ print('-' * width)
 for i in range(row_count):
     tmp = f'{i+1:^4}|'
     for j in range(column_count):
-        tmp += f'{matrix_z[i][j]:^6}|'
+        tmp += f'{matrix_z[i][j]:^6.3g}|'
     print(tmp)
 print('-' * width)
 
@@ -52,7 +52,7 @@ for i in range(row_count):
         if matrix_d[i][j] > sum_i_z:
             g[i] += 1
 
-print('Матрица G до преобразований:')
+print('Матрица D до преобразований:')
 tmp = f'{"i/j":^4}|'
 for j in range(column_count):
     tmp += f'{j+1:^6}|'
@@ -63,7 +63,7 @@ print('-' * width)
 for i in range(row_count):
     tmp = f'{i+1:^4}|'
     for j in range(column_count):
-        tmp += f'{matrix_d[i][j]:^6}|'
+        tmp += f'{matrix_d[i][j]:^6.3g}|'
     print(tmp)
 print('-' * width)
 
@@ -73,7 +73,7 @@ for i in range(row_count):
     for j in range(column_count):
         matrix_d[i][j] *= max_g
 
-print('Матрица G после преобразований:')
+print('Матрица D после преобразований:')
 tmp = f'{"i/j":^4}|'
 for j in range(column_count):
     tmp += f'{j+1:^6}|'
@@ -84,7 +84,7 @@ print('-' * width)
 for i in range(row_count):
     tmp = f'{i+1:^4}|'
     for j in range(column_count):
-        tmp += f'{matrix_d[i][j]:^6}|'
+        tmp += f'{matrix_d[i][j]:^6.3g}|'
     print(tmp)
 print('-' * width)
 

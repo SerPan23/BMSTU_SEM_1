@@ -6,6 +6,7 @@
 # среднее арифметическое значение.
 
 
+
 row_count = int(input('Введите количество строк матрицы: '))
 column_count = int(input('Введите количество столбцов матрицы: '))
 
@@ -22,9 +23,11 @@ for i in range(row_count):
 
 ni = int(input('Введите размера массива i: '))
 mass_i = [0] * ni
+
 for i in range(ni):
     tmp = int(input(f'Введите {i+1}-й элемент массива i: '))
-    while not(0 <= tmp < row_count):
+    while not(0 < tmp <= row_count):
+        print("Ошибка! Индекс должен быть с 1 до количества строк")
         tmp = int(input(f'Введите {i + 1}-й элемент массива i: '))
     mass_i[i] = tmp
 

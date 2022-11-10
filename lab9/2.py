@@ -44,6 +44,7 @@ print('-' * width)
 #     for i in range(n):
 #         matrix[i][j], matrix[i][n - 1 - j] = \
 #             matrix[i][n - 1 - j], matrix[i][j]
+# Поворот на 90 по часовой стрелки
 for i in range(n // 2):
     for j in range(i, n - i - 1):
         tmp = matrix[i][j]

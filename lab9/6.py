@@ -14,26 +14,26 @@ while row_count <= 0 or column_count <= 0:
     column_count = int(input('Введите количество столбцов матрицы: '))
 
 
-matrix_a = [[0]*column_count for _ in range(row_count)]
+matrix_a = [[0.0]*column_count for _ in range(row_count)]
 print('Матрица A:')
 for i in range(row_count):
     for j in range(column_count):
-        matrix_a[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
+        matrix_a[i][j] = float(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
-matrix_b = [[0]*column_count for _ in range(row_count)]
+matrix_b = [[0.0]*column_count for _ in range(row_count)]
 print('Матрица B:')
 for i in range(row_count):
     for j in range(column_count):
-        matrix_b[i][j] = int(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
+        matrix_b[i][j] = float(input(f'Введите элемент с номером строки = {i+1} и номером столбца = {j+1}: '))
 
 
-matrix_c = [[0]*column_count for _ in range(row_count)]
+matrix_c = [[0.0]*column_count for _ in range(row_count)]
 
 for i in range(row_count):
     for j in range(column_count):
         matrix_c[i][j] = matrix_a[i][j] * matrix_b[i][j]
 
-v = [0] * column_count
+v = [0.0] * column_count
 
 for j in range(column_count):
     for i in range(row_count):
@@ -51,7 +51,7 @@ print('-' * width)
 for i in range(row_count):
     tmp = f'{i + 1:^4}|'
     for j in range(column_count):
-        tmp += f'{matrix_a[i][j]:^6}|'
+        tmp += f'{matrix_a[i][j]:^6.3g}|'
     print(tmp)
 print('-' * width)
 
@@ -66,7 +66,7 @@ print('-' * width)
 for i in range(row_count):
     tmp = f'{i + 1:^4}|'
     for j in range(column_count):
-        tmp += f'{matrix_b[i][j]:^6}|'
+        tmp += f'{matrix_b[i][j]:^6.3g}|'
     print(tmp)
 print('-' * width)
 
@@ -81,10 +81,10 @@ print('-' * width)
 for i in range(row_count):
     tmp = f'{i + 1:^4}|'
     for j in range(column_count):
-        tmp += f'{matrix_c[i][j]:^6}|'
+        tmp += f'{matrix_c[i][j]:^6.3g}|'
     print(tmp)
 print('-' * width)
 
 print('Массив V:')
 for j in range(column_count):
-    print(f'{j + 1}-й элемент массива v: {v[j]}')
+    print(f'{j + 1}-й элемент массива v: {v[j]:.3g}')

@@ -15,15 +15,29 @@ import math as m
 
 
 def F(x: float):
-    return x ** 3 + 3 * x + 1
+    # return x**2/2
+    try:
+        return x ** 4 / 4
+    except Exception:
+        print(f'Первообразная функция нарушает непрерывность в x = {x:.5g}')
+        exit()
 
 
 def f(x: float):
-    return 3 * x ** 2 + 3
+    # return x
+    try:
+        return x ** 3
+    except Exception:
+        print(f'Функция нарушает непрерывность в x = {x:.5g}')
+        exit()
 
 
 def middle_rectangles_method(a: float, b: float, n: int, func) -> float:
-    h = (b - a) / n
+    try:
+        h = (b - a) / n
+    except ZeroDivisionError:
+        print('Ошибка! Количество участков разбиения для метода серединных прямоугольников не достаточно')
+        exit()
     s = 0
     x = a + h / 2
     for i in range(1, n + 1):
@@ -34,7 +48,12 @@ def middle_rectangles_method(a: float, b: float, n: int, func) -> float:
 
 
 def parabola_method(a: float, b: float, n: int, func) -> float:
-    h = (b - a) / n
+    n //= 2
+    try:
+        h = (b - a) / n
+    except ZeroDivisionError:
+        print('Ошибка! Количество участков разбиения для метода параболы не достаточно')
+        exit()
     s = 0
     x0 = a
     x1 = a + h
@@ -44,6 +63,7 @@ def parabola_method(a: float, b: float, n: int, func) -> float:
         x1 += h
     integral = s * h / 6
     return integral
+
 
 
 start = end = n1 = n2 = None
@@ -85,12 +105,40 @@ print('-' * table_width)
 
 true_integral = F(end) - F(start)
 # print(f'True integral: {true_integral:.5g}')
+print(f'Посчитанный через первообразную интеграл = {true_integral:.5g}')
 
 delta_first_N1 = abs(true_integral - first_integral_N1)
 delta_first_N2 = abs(true_integral - first_integral_N2)
 
 delta_second_N1 = abs(true_integral - second_integral_N1)
 delta_second_N2 = abs(true_integral - second_integral_N2)
+
+print('Абсолютные погрешности:')
+print('-' * table_width)
+print(f'{"":14} | {"N1":^14} | {"N2":^14}|')
+print('-' * table_width)
+print(f'{"Cр. прямоуг.":^14} | {delta_first_N1:^14.5g} | {delta_first_N2:^14.5g}|')
+print('-' * table_width)
+print(f'{"Парабол":^14} | {delta_second_N1:^14.5g} | {delta_second_N2:^14.5g}|')
+print('-' * table_width)
+
+try:
+    rel_delta_first_N1 = delta_first_N1 / true_integral
+    rel_delta_first_N2 = delta_first_N2 / true_integral
+
+    rel_delta_second_N1 = delta_second_N1 / true_integral
+    rel_delta_second_N2 = delta_second_N2 / true_integral
+
+    print('Относительные погрешности:')
+    print('-' * table_width)
+    print(f'{"":14} | {"N1":^14} | {"N2":^14}|')
+    print('-' * table_width)
+    print(f'{"Cр. прямоуг.":^14} | {rel_delta_first_N1:^14.5g} | {rel_delta_first_N2:^14.5g}|')
+    print('-' * table_width)
+    print(f'{"Парабол":^14} | {rel_delta_second_N1:^14.5g} | {rel_delta_second_N2:^14.5g}|')
+    print('-' * table_width)
+except ZeroDivisionError:
+    print('Ошибка! При вычисление относительной погрешности произошла ошибка (деление на ноль)')
 
 deltas = [delta_first_N1, delta_first_N2, delta_second_N1, delta_second_N2]
 
@@ -112,13 +160,13 @@ while eps is None:
     except Exception:
         print('Точностью вычислений может быть только вещественное число' +
               '\nПовторите попытку ввода:')
-n = 1
+n = 2
 integral_1 = worst_method(start, end, n, f)
 integral_2 = worst_method(start, end, 2 * n, f)
-n *= 2
-while abs(integral_1 - integral_2) > eps:
+while True:
+    if abs(integral_1 - integral_2) < eps:
+        print(f'Количество участков разбиения = {n}')
+        break
     n *= 2
-    integral_2, integral_1 = integral_1, integral_2
-    integral_2 = worst_method(start, end, n, f)
-
-print(f'Количество участков разбиения = {n}')
+    integral_1 = integral_2
+    integral_2 = worst_method(start, end, 2*n, f)

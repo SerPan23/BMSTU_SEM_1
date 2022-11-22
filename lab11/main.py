@@ -112,25 +112,62 @@ def table_draw(data, table_widths):
         + f'{"─" * table_widths[1]:^{table_widths[1]}}┴'
         + f'{"─" * table_widths[1]:^{table_widths[1]}}' + '┘')
 
-
-n = int(input('Введите размер массива: '))
+n = None
+while n is None:
+    try:
+        n = int(input('Введите размер массива: '))
+        if n <= 0:
+            n = None
+            raise Exception()
+    except Exception:
+        print('Размер массива должен быть целым числом и больше 0')
 mass = [0.0] * n
 for i in range(n):
-    mass[i] = float(input(f'Введите элемент {i+1}-й строки: '))
+    tmp = None
+    while tmp is None:
+        try:
+            tmp = float(input(f'Введите элемент {i+1}-й строки: '))
+        except Exception:
+            print('Элементом массива должно быть число')
+    mass[i] = tmp
 
 insertion_sort(mass, n)
 
-print(*mass)
+for i in range(n):
+    print(f'{i+1}-й элемент массива: {mass[i]}')
+# print(*mass)
 
-n1 = int(input('Введите первый размер массива: '))
+n1 = n2 = n3 = None
+while n1 is None:
+    try:
+        n1 = int(input('Введите первый размер массива: '))
+        if n1 <= 0:
+            n1 = None
+            raise Exception()
+    except Exception:
+        print('Размер массива должен быть целым числом и больше 0')
 t1, k1 = ordered_list_sort(n1)
 t4, k4 = random_list_sort(n1)
 t7, k7 = rev_ordered_list_sort(n1)
-n2 = int(input('Введите второй размер массива: '))
+while n2 is None:
+    try:
+        n2 = int(input('Введите второй размер массива: '))
+        if n2 <= 0:
+            n2 = None
+            raise Exception()
+    except Exception:
+        print('Размер массива должен быть целым числом и больше 0')
 t2, k2 = ordered_list_sort(n2)
 t5, k5 = random_list_sort(n2)
 t8, k8 = rev_ordered_list_sort(n2)
-n3 = int(input('Введите третий размер массива: '))
+while n3 is None:
+    try:
+        n3 = int(input('Введите третий размер массива: '))
+        if n3 <= 0:
+            n3 = None
+            raise Exception()
+    except Exception:
+        print('Размер массива должен быть целым числом и больше 0')
 t3, k3 = ordered_list_sort(n3)
 t6, k6 = random_list_sort(n3)
 t9, k9 = rev_ordered_list_sort(n3)

@@ -41,7 +41,6 @@ def insertion_sort(data, n):
             permutations += 1
             j -= 1
         data[j + 1] = selected
-        permutations += 1
 
     return permutations
 
@@ -122,14 +121,14 @@ while n is None:
             raise Exception()
     except Exception:
         print('Размер массива должен быть целым числом и больше 0')
-mass = [0.0] * n
+mass = [0] * n
 for i in range(n):
     tmp = None
     while tmp is None:
         try:
-            tmp = float(input(f'Введите элемент {i+1}-й строки: '))
+            tmp = int(input(f'Введите элемент {i+1}-й строки: '))
         except Exception:
-            print('Элементом массива должно быть число')
+            print('Элементом массива должно быть целым число')
     mass[i] = tmp
 
 insertion_sort(mass, n)

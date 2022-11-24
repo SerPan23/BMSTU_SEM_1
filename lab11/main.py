@@ -29,47 +29,48 @@ def binary_search(data, item, low, high):
 
 
 def insertion_sort(data, n):
-    permutaions = 0
+    permutations = 0
     for i in range(n):
         j = i - 1
         selected = data[i]
 
-        loc = binary_search(data, selected, 0, j)
+        insert_loc = binary_search(data, selected, 0, j)
 
-        while j >= loc:
+        while j >= insert_loc:
             data[j + 1] = data[j]
-            permutaions += 1
+            permutations += 1
             j -= 1
         data[j + 1] = selected
+        permutations += 1
 
-    return permutaions
+    return permutations
 
 
 def ordered_list_sort(n):
     data = [i for i in range(1, n + 1)]
     start_time = time.time()
-    permutaions = insertion_sort(data, n)
+    permutations = insertion_sort(data, n)
     end_time = time.time()
     total_time = end_time - start_time
-    return total_time, permutaions
+    return total_time, permutations
 
 
 def rev_ordered_list_sort(n):
     data = [i for i in range(n, 0, -1)]
     start_time = time.time()
-    permutaions = insertion_sort(data, n)
+    permutations = insertion_sort(data, n)
     end_time = time.time()
     total_time = end_time - start_time
-    return total_time, permutaions
+    return total_time, permutations
 
 
 def random_list_sort(n):
     data = [random.randint(-1000000, 10000000) for _ in range(n)]
     start_time = time.time()
-    permutaions = insertion_sort(data, n)
+    permutations = insertion_sort(data, n)
     end_time = time.time()
     total_time = end_time - start_time
-    return total_time, permutaions
+    return total_time, permutations
 
 
 def table_draw(data, table_widths):

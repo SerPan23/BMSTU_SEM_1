@@ -123,11 +123,11 @@ def replace_all_word_occurrences(text):
             print('Слово это набор букв без пробелов, цифр и других символов')
     for i in range(len(text)):
         tmp = text[i].split()
-        i = -1
+        j = -1
         try:
             while True:
-                i = tmp.index(old_word, i + 1)
-                tmp[i] = new_word
+                j = tmp.index(old_word, j + 1)
+                tmp[j] = new_word
         except ValueError:
             pass
         text[i] = ' '.join(tmp)

@@ -12,7 +12,7 @@ def function_select(number):
     elif number == 6:
         return calculating_arithmetic_expression
     elif number == 7:
-        return del_longer_sentence_start_letter
+        return del_sentence_more_word_start_letter
     elif number == 0:
         return finish_program
 
@@ -28,7 +28,7 @@ def align_text_to_left(text):
     for i in range(len(text)):
         tmp = text[i].split()
         text[i] = ' '.join(tmp)
-    text = [i.lstrip() for i in text]
+    # text = [i.lstrip() for i in text]
     return text
 
 
@@ -136,122 +136,83 @@ def replace_all_word_occurrences(text):
 
 # функция 6
 def calculating_arithmetic_expression(text):
-    text = align_text_to_left(text)
-    text_in_str = ''.join(text)
-    arithmetic_expression_pos = []
-    start_ind = 0
-    while True:
-        tmp_mul = text_in_str.find('*', start_ind)
-        if tmp_mul == -1:
-            break
-        else:
-            arithmetic_expression_pos.append([tmp_mul])
-            start_ind = tmp_mul + 1
-    start_ind = 0
-    while True:
-        tmp_del = text_in_str.find('/', start_ind)
-        if tmp_del == -1:
-            break
-        else:
-            arithmetic_expression_pos.append([tmp_del])
-            start_ind = tmp_del + 1
+    for i in range(len(text)):
+        cursor_pos = 0
+        while cursor_pos < len(text[i]):
+            if text[i][cursor_pos] in '*/':
+                left_arg = ''
+                min_k = cursor_pos
+                for k in range(cursor_pos-1, -1, -1):
+                    if text[i][k] == ' ':
+                        break
 
-    arithmetic_expression_pos.sort()
-    # print(arithmetic_expression_pos)
-    for i in range(len(arithmetic_expression_pos)):
-        start_ind = arithmetic_expression_pos[i][0]
-        start_sub = -1
-        while start_ind > 0:
-            start_ind -= 1
+                    if text[i][k] == '-':
+                        if not left_arg:
+                            break
+                        else:
+                            left_arg = text[i][k] + left_arg
+                            min_k = k
+                            continue
 
-            if text_in_str[start_ind].isnumeric():
-                start_sub = start_ind
-            elif text_in_str[start_ind] != ' ':
-                break
-        if start_sub == -1:
-            continue
-        end_ind = arithmetic_expression_pos[i][0]
-        end_sub = -1
-        while end_ind < len(text_in_str) - 1:
-            end_ind += 1
-            if text_in_str[end_ind].isnumeric():
-                end_sub = end_ind
-            elif text_in_str[end_ind] != ' ':
-                break
-        if end_sub == -1:
-            continue
+                    if text[i][k] in '0123456789' and '-' not in left_arg:
+                        left_arg = text[i][k] + left_arg
+                    else:
+                        break
 
-        arithmetic_expression_pos[i].append(start_sub)
-        arithmetic_expression_pos[i].append(end_sub)
+                    min_k = k
 
-    results = []
-    for i in arithmetic_expression_pos:
-        if len(i) == 3:
-            expression = text_in_str[i[1]:i[2]+1].split()
-            expression = ''.join(expression)
-            tmp = ''
-            exp = []
-            for j in expression:
-                if j not in '*/':
-                    tmp += j
+                if not left_arg:
+                    cursor_pos += 1
+                    continue
+
+                max_k = cursor_pos
+                right_arg = ''
+                for k in range(cursor_pos+1, len(text[i])):
+                    if text[i][k] == ' ':
+                        break
+
+                    if text[i][k] == '-':
+                        if right_arg == '':
+                            right_arg = text[i][k] + right_arg
+                            max_k = k
+                            continue
+
+                    if text[i][k] in '0123456789':
+                        right_arg += text[i][k]
+                    else:
+                        break
+
+                    max_k += 1
+
+                if not right_arg:
+                    cursor_pos += 1
+                    continue
+
+                if text[i][cursor_pos] == '*':
+                    result = str(int(left_arg) * int(right_arg))
                 else:
-                    exp.append(int(tmp))
-                    tmp = ''
-                    exp.append(j)
-            if tmp.isnumeric():
-                exp.append(int(tmp))
+                    try:
+                        result = str(int(left_arg) // int(right_arg))
+                    except:
+                        print('Ошибка в тексте присутствует деление на ноль (Ответ заменен на None)!')
+                        print('-' * 50)
+                        result = 'None'
 
-            if len(exp) % 3 == 0 and len(exp) >= 3:
-                res = exp[0]
-                for j in range(1, len(exp), 2):
-                    if exp[j] == '*':
-                        res *= exp[j+1]
-                    elif exp[j] == '/':
-                        res /= exp[j+1]
+                text[i] = text[i][:min_k] + result + text[i][max_k+1:]
+                cursor_pos = min_k
 
-                results.append([i[1], i[2], res])
+            cursor_pos += 1
 
-    results.sort(reverse=True)
-    # print(results)
-    for i in results:
-        start_in_text = get_pos_in_text(text, i[0])
-        end_in_text = get_pos_in_text(text, i[1])
-        if start_in_text[0] == end_in_text[0]:
-            text[start_in_text[0]] = text[start_in_text[0]][:start_in_text[1]] \
-                                     + str(i[2]) + text[start_in_text[0]][end_in_text[1]+1:]
-        else:
-            text[start_in_text[0]] = text[start_in_text[0]][:start_in_text[0]] + str(i[2])
-            for j in range(start_in_text[0] + 1, end_in_text[0] + 1):
-                if j == end_in_text[0]:
-                    text[j] = text[j][end_in_text[1]+1:]
-                else:
-                    text[j] = ''
-    try:
-        while text.index('') != -1:
-            text.pop(text.index(''))
-    except Exception:
-        pass
-    return align_text_to_left(text)
-
-
-def get_pos_in_text(text, pos_in_str):
-    str_ind = 0
-    while pos_in_str > len(text[str_ind]):
-        # print(pos_in_str, str_ind, len(text[str_ind]))
-        pos_in_str -= len(text[str_ind])
-        str_ind += 1
-
-    ind = pos_in_str
-    return str_ind, ind
+    return text
 
 
 # функция 7
-def del_longer_sentence_start_letter(text):
+def del_sentence_more_word_start_letter(text):
     text = align_text_to_left(text)
     symbol = None
     while symbol is None:
         try:
-            symbol = input('Введите символ начала предложения которое хотите удалить: ')
+            symbol = input('Введите символ начала слов: ')
             if not symbol.isalpha() or len(symbol) > 1:
                 symbol = None
                 raise Exception()
@@ -282,36 +243,40 @@ def del_longer_sentence_start_letter(text):
                     sentences_pos.append([[t_str, t_pos], [i, tmp]])
                 start_ind = tmp + 1
 
-    # print(sentences_pos)
-    max_len_id = -1
+    need_sent_id = -1
+    max_count = 0
     for i in range(len(sentences_pos)):
-        sent_len = 0
+        tmp = ''
         if sentences_pos[i][1][0] == sentences_pos[i][0][0]:
-            sent_len = sentences_pos[i][1][1] - sentences_pos[i][0][1]
+            tmp = text[sentences_pos[i][1][0]][sentences_pos[i][0][1]:sentences_pos[i][1][1]]
         else:
             for j in range(sentences_pos[i][0][0], sentences_pos[i][1][0] + 1):
                 if j == sentences_pos[i][1][0]:
-                    sent_len += len(text[j]) - sentences_pos[i][1][1]
+                    tmp += ' ' + text[j][:sentences_pos[i][1][1]] + ' '
                 elif j == sentences_pos[i][0][0]:
-                    sent_len += len(text[j]) - sentences_pos[i][0][1]
+                    tmp += ' ' + text[j][sentences_pos[i][0][1]:] + ' '
                 else:
-                    sent_len += len(text[j])
-        sentences_pos[i].append(sent_len)
-        if text[sentences_pos[i][0][0]][sentences_pos[i][0][1]].lower() == symbol.lower():
-            if max_len_id == -1:
-                max_len_id = i
-            elif sentences_pos[max_len_id][2] < sentences_pos[i][2]:
-                max_len_id = i
+                    tmp += ' ' + text[j] + ' '
+        # print(tmp, end='\n----------\n')
+        tmp = tmp.split()
+        tmp_count = 0
+        for word in tmp:
+            if word[0] == symbol:
+                tmp_count += 1
+        if need_sent_id == -1 and tmp_count > 0:
+            need_sent_id = i
+            max_count = tmp_count
+        elif tmp_count > max_count:
+            need_sent_id = i
+            max_count = tmp_count
 
-    # print(sentences_pos)
-    # print(max_len_id)
-    for i in range(sentences_pos[max_len_id][0][0], sentences_pos[max_len_id][1][0] + 1):
-        if sentences_pos[max_len_id][0][0] < i < sentences_pos[max_len_id][1][0]:
+    for i in range(sentences_pos[need_sent_id][0][0], sentences_pos[need_sent_id][1][0] + 1):
+        if sentences_pos[need_sent_id][0][0] < i < sentences_pos[need_sent_id][1][0]:
             text[i] = ''
-        elif sentences_pos[max_len_id][0][0] == i:
-            text[i] = text[i][:sentences_pos[max_len_id][0][1]]
-        elif sentences_pos[max_len_id][1][0] == i:
-            text[i] = text[i][sentences_pos[max_len_id][1][1] + 1:]
+        elif sentences_pos[need_sent_id][0][0] == i:
+            text[i] = text[i][:sentences_pos[need_sent_id][0][1] + 1]
+        elif sentences_pos[need_sent_id][1][0] == i:
+            text[i] = text[i][sentences_pos[need_sent_id][1][1] + 1:]
     try:
         while text.index('') != -1:
             text.pop(text.index(''))

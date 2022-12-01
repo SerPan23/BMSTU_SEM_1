@@ -87,15 +87,22 @@ def deleting_all_word_occurrences(text):
         try:
             word = input('Введите слово которое хотите удалить: ')
             # print(word, word.isalpha())
-            if not word.isalpha():
-                word = None
-                raise Exception()
+            # print(word.split('-'))
+            for i in word.split('-'):
+                if not i.isalpha():
+                    word = None
+                    raise Exception()
         except Exception:
             print('Слово это набор букв без пробелов, цифр и других символов')
     for i in range(len(text)):
         tmp = text[i].split()
-        while word in tmp:
-            tmp.remove(word)
+        for j in range(len(tmp)):
+            if tmp[j] == word:
+                tmp[j] = ''
+            if tmp[j][:-1] == word and tmp[j][-1] in '.,?!:;':
+                tmp[j] = tmp[j][-1]
+        # while word in tmp:
+        #     tmp.remove(word)
         text[i] = ' '.join(tmp)
     return text
 
@@ -106,19 +113,21 @@ def replace_all_word_occurrences(text):
     while old_word is None:
         try:
             old_word = input('Введите слово которое хотите заменить: ')
-            if not old_word.isalpha():
-                old_word = None
-                raise Exception()
+            for i in old_word.split('-'):
+                if not i.isalpha():
+                    old_word = None
+                    raise Exception()
         except Exception:
-            print('Слово это набор букв без пробелов, цифр и других символов')
+            print('Слово это набор букв без пробелов и цифр и других символов')
 
     new_word = None
     while new_word is None:
         try:
             new_word = input('Введите слово на которое хотите заменить: ')
-            if not new_word.isalpha():
-                new_word = None
-                raise Exception()
+            for i in new_word.split('-'):
+                if not i.isalpha():
+                    new_word = None
+                    raise Exception()
         except Exception:
             print('Слово это набор букв без пробелов, цифр и других символов')
     for i in range(len(text)):
@@ -142,7 +151,7 @@ def calculating_arithmetic_expression(text):
             if text[i][cursor_pos] in '*/':
                 left_arg = ''
                 min_k = cursor_pos
-                for k in range(cursor_pos-1, -1, -1):
+                for k in range(cursor_pos - 1, -1, -1):
                     if text[i][k] == ' ':
                         break
 
@@ -167,7 +176,7 @@ def calculating_arithmetic_expression(text):
 
                 max_k = cursor_pos
                 right_arg = ''
-                for k in range(cursor_pos+1, len(text[i])):
+                for k in range(cursor_pos + 1, len(text[i])):
                     if text[i][k] == ' ':
                         break
 
@@ -198,7 +207,7 @@ def calculating_arithmetic_expression(text):
                         print('-' * 50)
                         result = 'None'
 
-                text[i] = text[i][:min_k] + result + text[i][max_k+1:]
+                text[i] = text[i][:min_k] + result + text[i][max_k + 1:]
                 cursor_pos = min_k
 
             cursor_pos += 1
@@ -233,11 +242,14 @@ def del_sentence_more_word_start_letter(text):
                     t_str = sentences_pos[-1][1][0]
                     t_pos = sentences_pos[-1][1][1]
                     while True:
-                        t_pos += 1
-                        if len(text[t_str]) == t_pos:
-                            text[t_str] += 1
-                            t_pos = 0
-                        if text[t_str][t_pos] != '.' and text[t_str][t_pos] != ' ':
+                        try:
+                            t_pos += 1
+                            if len(text[t_str]) == t_pos:
+                                t_str += 1
+                                t_pos = 0
+                            if text[t_str][t_pos] != '.' and text[t_str][t_pos] != ' ':
+                                break
+                        except:
                             break
 
                     sentences_pos.append([[t_str, t_pos], [i, tmp]])
@@ -245,6 +257,7 @@ def del_sentence_more_word_start_letter(text):
 
     need_sent_id = -1
     max_count = 0
+    removable_sent = ''
     for i in range(len(sentences_pos)):
         tmp = ''
         if sentences_pos[i][1][0] == sentences_pos[i][0][0]:
@@ -252,7 +265,7 @@ def del_sentence_more_word_start_letter(text):
         else:
             for j in range(sentences_pos[i][0][0], sentences_pos[i][1][0] + 1):
                 if j == sentences_pos[i][1][0]:
-                    tmp += ' ' + text[j][:sentences_pos[i][1][1]] + ' '
+                    tmp += ' ' + text[j][:sentences_pos[i][1][1] + 1] + ' '
                 elif j == sentences_pos[i][0][0]:
                     tmp += ' ' + text[j][sentences_pos[i][0][1]:] + ' '
                 else:
@@ -261,29 +274,55 @@ def del_sentence_more_word_start_letter(text):
         tmp = tmp.split()
         tmp_count = 0
         for word in tmp:
-            if word[0] == symbol:
+            if word[0].lower() == symbol.lower():
                 tmp_count += 1
         if need_sent_id == -1 and tmp_count > 0:
             need_sent_id = i
             max_count = tmp_count
+            removable_sent = ' '.join(tmp)
         elif tmp_count > max_count:
             need_sent_id = i
             max_count = tmp_count
+            removable_sent = ' '.join(tmp)
+    if need_sent_id != -1:
+        if sentences_pos[need_sent_id][0][0] == sentences_pos[need_sent_id][1][0]:
+            text[sentences_pos[need_sent_id][0][0]] = \
+                text[sentences_pos[need_sent_id][0][0]
+                ][:sentences_pos[need_sent_id][0][1]] + \
+                text[sentences_pos[need_sent_id][0][0]
+                ][sentences_pos[need_sent_id][1][1] + 1:]
 
-    for i in range(sentences_pos[need_sent_id][0][0], sentences_pos[need_sent_id][1][0] + 1):
-        if sentences_pos[need_sent_id][0][0] < i < sentences_pos[need_sent_id][1][0]:
-            text[i] = ''
-        elif sentences_pos[need_sent_id][0][0] == i:
-            text[i] = text[i][:sentences_pos[need_sent_id][0][1] + 1]
-        elif sentences_pos[need_sent_id][1][0] == i:
-            text[i] = text[i][sentences_pos[need_sent_id][1][1] + 1:]
+        else:
+            text[sentences_pos[need_sent_id][0][0]] = \
+                text[sentences_pos[need_sent_id][0]
+                [0]][:sentences_pos[need_sent_id][0][1]]
+
+            text[sentences_pos[need_sent_id][1][0]] = \
+                text[sentences_pos[need_sent_id][1]
+                [0]][sentences_pos[need_sent_id][1][1] + 1:]
+
+            for k in range(sentences_pos[need_sent_id][1][0] - 1,
+                           sentences_pos[need_sent_id][0][0], -1):
+                text.pop(k)
+
     try:
         while text.index('') != -1:
             text.pop(text.index(''))
     except Exception:
         pass
+    print('-' * 50)
+    if removable_sent != '':
+        print('Удаляемое предложение:')
+        print(removable_sent)
+    else:
+        print('Такое предложение не найдено!')
+    print('-' * 50)
     return align_text_to_left(text)
 
 
 def print_text(text):
-    print(*text, sep='\n')
+    if len(text) == 0:
+        print('Вы удалили весь текст!')
+        finish_program(text)
+    else:
+        print(*text, sep='\n')

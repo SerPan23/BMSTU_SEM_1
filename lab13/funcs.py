@@ -12,9 +12,6 @@ def choose_file():
         try:
             db_name = \
                 input('Введите название файла, который хотиете выбрать (для разделения каталогов используйте /): ')
-            # if not file_worker.is_file_name_correct(db_name):
-            #     db_name = None
-            #     raise ValueError()
             if not file_worker.is_correct_path(db_name):
                 db_name = None
                 raise ValueError()

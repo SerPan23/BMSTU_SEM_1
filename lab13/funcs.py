@@ -130,7 +130,7 @@ def print_line(line):
     print('| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |'.format(*data))
 
 
-def show_db(db_name=None, line=None):
+def show_db(db_name=None, lines=[]):
     tmp = '| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |' \
         .format("id", "Имя", "фамилия", "отчество",
                 "сумма баллов за егэ", "баллы за индивидуальные достижения")
@@ -138,7 +138,7 @@ def show_db(db_name=None, line=None):
     print('-' * width)
     print(tmp)
     print('|' + '-' * (width - 2) + '|')
-    if line is None:
+    if len(lines) == 0:
         with open(db_name, 'r') as f:
             while True:
                 line = f.readline()
@@ -146,7 +146,8 @@ def show_db(db_name=None, line=None):
                     break
                 print_line(line)
     else:
-        print_line(line)
+        for line in lines:
+            print_line(line)
 
     print('-' * width)
 
@@ -166,10 +167,10 @@ def search_id_col(db_name):
         except:
             print('Искомый должен быть положительным целым числом')
     res = file_worker.search_by_id(db_name, id)
-    if res is None:
+    if len(res) == 0:
         print('Строка с заданным id не найдена')
     else:
-        show_db(line=res)
+        show_db(lines=res)
 
 
 def search_name_and_surname_cols(db_name):
@@ -177,7 +178,7 @@ def search_name_and_surname_cols(db_name):
     surname = input('Введите фамилию абитуриента: ')
     res = file_worker.search_by_name_and_surname(db_name, name, surname)
 
-    if res is None:
+    if len(res) == 0:
         print('Строка с заданным именем и фамилией не найдена')
     else:
-        show_db(line=res)
+        show_db(lines=res)

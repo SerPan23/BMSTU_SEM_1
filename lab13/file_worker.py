@@ -96,8 +96,9 @@ def del_line(db_name, id):
 
 
 def search_by_id(db_name, id):
+    found_lines = []
     if id > get_last_id(db_name):
-        return None
+        return found_lines
     with open(db_name, 'r') as f:
         while True:
             line = f.readline()
@@ -106,11 +107,12 @@ def search_by_id(db_name, id):
 
             tmp_id = int(line.split('|')[0])
             if tmp_id == id:
-                return line
-    return None
+                found_lines.append(line)
+    return found_lines
 
 
 def search_by_name_and_surname(db_name, name, surname):
+    found_lines = []
     with open(db_name, 'r') as f:
         while True:
             line = f.readline()
@@ -119,5 +121,5 @@ def search_by_name_and_surname(db_name, name, surname):
 
             tmp_line = line.split('|')
             if tmp_line[1] == name and tmp_line[2] == surname:
-                return line
-    return None
+                found_lines.append(line)
+    return found_lines

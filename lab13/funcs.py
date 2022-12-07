@@ -15,10 +15,15 @@ def choose_file():
             if not file_worker.is_correct_path(db_name):
                 db_name = None
                 raise ValueError()
-            if not file_worker.check_file_exists(db_name):
+            tmp = file_worker.check_file_exists(db_name)
+            if tmp == PermissionError:
+                raise PermissionError()
+            elif not file_worker.check_file_exists(db_name):
                 raise Exception()
         except ValueError:
-            print('Название файла должно иметь ввид demo.txt\nИ в названии файла не должны быть символы <>:"/?|*\\')
+            print('Название файла должно иметь ввид demo.txt\nИ в названии файла не должны быть символы ,.<>:\'"/?|*\\')
+        except PermissionError:
+            print('Ошибка! У вас нет прав на открытие этого файла')
         except Exception:
             print('Файл с заданным именем не существует! Хотите его создать?')
             answer = None
@@ -124,6 +129,11 @@ def init_db(db_name):
 
 def print_line(line):
     data = line.rstrip().split('|')
+    if len(data) < 6:
+        tmp = ['None'] * 6
+        for i in range(len(data)):
+            tmp[i] = data[i]
+        data = tmp
     print('| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |'.format(*data))
 
 

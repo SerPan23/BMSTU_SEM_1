@@ -2,7 +2,7 @@ import os
 
 
 def is_name_correct(name):
-    for i in '<>:"/?|*\\':
+    for i in ',.<>:\'"/?|*\\':
         if i in name:
             return False
     return True
@@ -10,7 +10,7 @@ def is_name_correct(name):
 
 def is_file_name_correct(name):
     tmp = name.split('.')
-    if len(tmp) != 2:
+    if len(tmp) != 2 or tmp[1] == 'py':
         return False
     if not is_name_correct(tmp[0]) or not is_name_correct(tmp[1]):
         return False
@@ -29,7 +29,7 @@ def is_correct_path(db_name):
             raise Exception()
     except Exception:
         return False
-    if path[0] == '..':
+    if path[0] == '..' or path[0] == '.':
         start = 1
     else:
         start = 0
@@ -57,7 +57,9 @@ def create_file(db_name, lines=None):
 def check_file_exists(db_name):
     try:
         open(db_name, 'r')
-    except Exception:
+    except PermissionError:
+        return PermissionError
+    except FileNotFoundError:
         return False
     return True
 

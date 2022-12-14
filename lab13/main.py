@@ -51,7 +51,7 @@ def menu():
         try:
             item_selected_number = int(
                 input('Введите номер операции которую хотите выполнить: '))
-            if not (0 <= item_selected_number <= 7):
+            if not (0 <= item_selected_number < 7):
                 item_selected_number = None
                 raise ValueError()
         except ValueError:

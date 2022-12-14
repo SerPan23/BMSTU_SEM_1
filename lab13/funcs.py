@@ -53,7 +53,7 @@ def line_generator(db_name):
                 name = None
                 raise Exception()
         except:
-            print('Имя не может быть пустой строкой')
+            print
     while surname is None:
         try:
             surname = input('Введите фамилию абитуриента: ')

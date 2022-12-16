@@ -4,18 +4,29 @@ import useful_funcs as uf
 
 
 def is_name_correct(name):
-    for i in ',.<>:\'"/?|*\\':
+    if len(name) == 0:
+        return False
+    for i in ',<>:\'"/?|*\\':
         if i in name:
             return False
     return True
 
 
 def is_file_name_correct(name):
+    # print(name)
+    flag = ('.' in name)
     tmp = name.split('.')
-    if len(tmp) != 2 or tmp[1] == 'py':
-        return False
-    if not is_name_correct(tmp[0]) or not is_name_correct(tmp[1]):
-        return False
+    # print(tmp)
+    try:
+        if not is_name_correct(tmp[0]) and len(tmp[0]) > 0:
+            return False
+    except:
+        pass
+    try:
+        if not is_name_correct(tmp[1]):
+            return False
+    except:
+        pass
     # for i in ':?.,!/\\':
     #     if i in tmp[0] or i in tmp[1]:
     #         return False
@@ -104,8 +115,12 @@ def clear_file(db_path):
 def create_file(db_path, lines=[]):
     path = db_path.split('/')
     path = '/'.join(path[:-1])
-    if not os.path.isdir(path):
-        os.makedirs(path)
+    # print(path)
+    try:
+        if not os.path.isdir(path):
+            os.makedirs(path)
+    except:
+        pass
 
     # print(db_path)
     with open(db_path, 'w+b') as f:

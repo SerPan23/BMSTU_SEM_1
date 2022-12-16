@@ -22,11 +22,9 @@
 from funcs import *
 
 DB_FORMAT = '20s20s20sii'
-db_path = None
 
 
-def menu():
-    global db_path
+def menu(db_path):
     funcs = [
         finish_program,
         choose_file,
@@ -62,7 +60,7 @@ def menu():
                 raise ValueError()
         except ValueError:
             print('-' * 50)
-            print('Номер операции должен быть целым числом от 0 до 6')
+            print('Номер операции должен быть целым числом от 0 до 7')
             print('-' * 50)
 
     if item_selected_number == 0:
@@ -75,10 +73,17 @@ def menu():
             print('Ошибка выберите сначала бд с которой будете работать (пункт 1)')
         else:
             funcs[item_selected_number](db_path, DB_FORMAT)
+    return db_path
 
 
-while True:
-    menu()
+def main():
+    db_path = None
+    while True:
+        db_path = menu(db_path)
+
+
+if __name__ == '__main__':
+    main()
 
 # print(fw.get_db_line_count('./1.txt', DB_FORMAT))
 

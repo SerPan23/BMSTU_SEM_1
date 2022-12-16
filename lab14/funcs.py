@@ -26,7 +26,7 @@ def choose_file(DB_FORMAT):
             elif not tmp:
                 raise Exception()
         except ValueError:
-            print('Название файла должно иметь ввид demo.txt\nИ в названии файла не должны быть символы ,.<>:\'"/?|*\\')
+            print('В названии файла не должны быть символы ,<>:\'"/?|*\\')
         except PermissionError:
             print('Ошибка! У вас нет прав на открытие этого файла')
         except Exception:
@@ -68,17 +68,17 @@ def init_db(db_path, DB_FORMAT):
 def input_line_data():
     name = uf.input_with_params(
         'Введите имя абитуриента: ',
-        'Имя не может быть пустой строкой и больше 255 символов',
+        'Имя не может быть пустой строкой и больше 20 символов',
         'not (0 < len(" var ") <= 20)'
     )
     surname = uf.input_with_params(
         'Введите фамилию абитуриента: ',
-        'Фамилия не может быть пустой строкой и больше 255 символов',
+        'Фамилия не может быть пустой строкой и больше 20 символов',
         'not (0 < len(" var ") <= 20)'
     )
     second_name = uf.input_with_params(
         'Введите отчество абитуриента(если его нет введите -): ',
-        'Отчество не может быть пустой строкой и больше 255 символов',
+        'Отчество не может быть пустой строкой и больше 20 символов',
         'not (0 < len(" var ") <= 20)'
     )
     sum_ege_results = uf.input_with_params(
@@ -150,7 +150,7 @@ def add_line_in_db(db_path, DB_FORMAT):
     else:
         tmp = lines_count
     line_index = int(uf.input_with_params(
-        f'Введите номер строки куда хотите вставить (строки сдвинутся вниз) (от 1 до {tmp}): ',
+        f'Введите номер строки куда хотите вставить (строки под сдвинутся вниз) (от 1 до {tmp}): ',
         'Сумма баллов за егэ должна быть положительным целым числом',
         f'not (0 < int(" var ") <= {tmp})'
     ))
@@ -187,12 +187,12 @@ def search_sum_ege_results_col(db_path, DB_FORMAT):
 def search_name_and_surname_cols(db_path, DB_FORMAT):
     name = uf.input_with_params(
         'Введите имя абитуриента: ',
-        'Имя не может быть пустой строкой и больше 255 символов',
+        'Имя не может быть пустой строкой и больше 20 символов',
         'not (0 < len(" var ") <= 20)'
     )
     surname = uf.input_with_params(
         'Введите фамилию абитуриента: ',
-        'Фамилия не может быть пустой строкой и больше 255 символов',
+        'Фамилия не может быть пустой строкой и больше 20 символов',
         'not (0 < len(" var ") <= 20)'
     )
     res = fw.search_by_name_and_surname_cols(db_path, DB_FORMAT, name, surname)

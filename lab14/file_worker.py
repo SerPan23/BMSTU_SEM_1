@@ -3,6 +3,19 @@ import struct
 import useful_funcs as uf
 
 
+def print_line(line, DB_FORMAT, ind):
+    data = struct.unpack(DB_FORMAT, line)
+    if len(data) <= 5:
+        tmp = ['None'] * 5
+        for i in range(len(data)):
+            try:
+                tmp[i] = data[i].rstrip(b'\x00').decode()
+            except:
+                tmp[i] = data[i]
+        data = tmp
+    print('| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |'.format(str(ind), *data))
+
+
 def is_name_correct(name):
     if len(name) == 0:
         return False
@@ -14,7 +27,6 @@ def is_name_correct(name):
 
 def is_file_name_correct(name):
     # print(name)
-    flag = ('.' in name)
     tmp = name.split('.')
     # print(tmp)
     try:
@@ -35,6 +47,8 @@ def is_file_name_correct(name):
 
 def is_correct_path(db_path):
     path = db_path.split('/')
+    while '' in path:
+        path.remove('')
     if len(path) <= 0:
         return False
     try:
@@ -42,7 +56,7 @@ def is_correct_path(db_path):
             raise Exception()
     except Exception:
         return False
-    if path[0] == '..' or path[0] == '.':
+    if path[0] == '..' or path[0] == '.' or path[0] == '':
         start = 1
     else:
         start = 0
@@ -55,7 +69,8 @@ def is_correct_path(db_path):
 
 def check_file_exists(db_path):
     try:
-        open(db_path, 'r')
+        f = open(db_path, 'r')
+        f.close()
     except PermissionError:
         return PermissionError
     except FileNotFoundError:
@@ -63,7 +78,7 @@ def check_file_exists(db_path):
             f = open(db_path, 'w+')
             f.close()
             os.remove(db_path)
-        except PermissionError:
+        except:
             return PermissionError
         return False
     return True
@@ -171,7 +186,9 @@ def line_remove(db_path, DB_FORMAT, line_index):
 
 
 def search_by_ege_results(db_name, DB_FORMAT, sum_ege_results_need):
-    found_lines = []
+    # found_lines = []
+    flag = False
+    ind = 1
     with open(db_name, 'rb') as f:
         while True:
             LINE_SIZE = struct.calcsize(DB_FORMAT)
@@ -185,12 +202,28 @@ def search_by_ege_results(db_name, DB_FORMAT, sum_ege_results_need):
             except:
                 tmp = line_data[3]
             if int(tmp) == int(sum_ege_results_need):
-                found_lines.append(line)
-    return found_lines
+                if not flag:
+                    tmp = '| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |' \
+                        .format("№", "Имя", "фамилия", "отчество",
+                                "сумма баллов за егэ", "баллы за индивидуальные достижения")
+                    width = len(tmp)
+                    print('-' * width)
+                    print(tmp)
+                    print('|' + '-' * (width - 2) + '|')
+                    flag = True
+                print_line(line, DB_FORMAT, ind)
+                ind += 1
+                # found_lines.append(line)
+    # return found_lines
+    if flag:
+        print('-' * width)
+    return ind
 
 
 def search_by_name_and_surname_cols(db_name, DB_FORMAT, name, surname):
-    found_lines = []
+    # found_lines = []
+    flag = False
+    ind = 1
     with open(db_name, 'rb') as f:
         while True:
             LINE_SIZE = struct.calcsize(DB_FORMAT)
@@ -206,5 +239,19 @@ def search_by_name_and_surname_cols(db_name, DB_FORMAT, name, surname):
                 tmp_name = line_data[0]
                 tmp_surname = line_data[1]
             if tmp_name == name and tmp_surname == surname:
-                found_lines.append(line)
-    return found_lines
+                if not flag:
+                    tmp = '| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |' \
+                        .format("№", "Имя", "фамилия", "отчество",
+                                "сумма баллов за егэ", "баллы за индивидуальные достижения")
+                    width = len(tmp)
+                    print('-' * width)
+                    print(tmp)
+                    print('|' + '-' * (width - 2) + '|')
+                    flag = True
+                print_line(line, DB_FORMAT, ind)
+                ind += 1
+                # found_lines.append(line)
+    # return found_lines
+    if flag:
+        print('-' * width)
+    return ind

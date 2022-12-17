@@ -1,5 +1,5 @@
 import os
-
+from file_worker import print_line
 import file_worker as fw
 import struct
 import useful_funcs as uf
@@ -26,7 +26,7 @@ def choose_file(DB_FORMAT):
             elif not tmp:
                 raise Exception()
         except ValueError:
-            print('В названии файла не должны быть символы ,<>:\'"/?|*\\')
+            print('В названии файла не должны быть символы ,<>:\'"/?|*\\ и оно не должно быть пустым')
         except PermissionError:
             print('Ошибка! У вас нет прав на открытие этого файла')
         except Exception:
@@ -100,20 +100,7 @@ def line_generate(DB_FORMAT):
     return structed_line
 
 
-def print_line(line, DB_FORMAT, ind):
-    data = struct.unpack(DB_FORMAT, line)
-    if len(data) <= 5:
-        tmp = ['None'] * 5
-        for i in range(len(data)):
-            try:
-                tmp[i] = data[i].rstrip(b'\x00').decode()
-            except:
-                tmp[i] = data[i]
-        data = tmp
-    print('| {:^5} | {:^25} | {:^25} | {:^25} | {:^20} | {:^35} |'.format(str(ind), *data))
-
-
-def show_db(db_path, DB_FORMAT, lines=[]):
+def show_db(db_path, DB_FORMAT):
     lines_count = fw.get_db_line_count(db_path, DB_FORMAT)
     if lines_count == 0:
         print('База данных пустая')
@@ -127,16 +114,11 @@ def show_db(db_path, DB_FORMAT, lines=[]):
     print(tmp)
     print('|' + '-' * (width - 2) + '|')
     ind = 1
-    if len(lines) == 0:
-        with open(db_path, 'rb') as f:
-            while True:
-                line = f.read(LINE_SIZE)
-                if not line:
-                    break
-                print_line(line, DB_FORMAT, ind)
-                ind += 1
-    else:
-        for line in lines:
+    with open(db_path, 'rb') as f:
+        while True:
+            line = f.read(LINE_SIZE)
+            if not line:
+                break
             print_line(line, DB_FORMAT, ind)
             ind += 1
 
@@ -178,10 +160,11 @@ def search_sum_ege_results_col(db_path, DB_FORMAT):
         'int(" var ") < 0'
     )
     res = fw.search_by_ege_results(db_path, DB_FORMAT, sum_ege_results_need)
-    if len(res) == 0:
+    # print(res)
+    if res-1 == 0:
         print('Ни одна строка с заданной суммой не найдена')
-    else:
-        show_db(db_path, DB_FORMAT, lines=res)
+    # else:
+    #     show_db(db_path, DB_FORMAT, lines=res)
 
 
 def search_name_and_surname_cols(db_path, DB_FORMAT):
@@ -196,7 +179,7 @@ def search_name_and_surname_cols(db_path, DB_FORMAT):
         'not (0 < len(" var ") <= 20)'
     )
     res = fw.search_by_name_and_surname_cols(db_path, DB_FORMAT, name, surname)
-    if len(res) == 0:
+    if res-1 == 0:
         print('Ни одна строка с заданным именем и фамилей не найдена')
-    else:
-        show_db(db_path, DB_FORMAT, lines=res)
+    # else:
+    #     show_db(db_path, DB_FORMAT, lines=res)

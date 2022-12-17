@@ -14,6 +14,19 @@ if [ ! -f $2 ]; then
 fi
 
 
+if [ ! -r "$1" ]; then
+    if echo "$3" | grep -Eq "^-v$"; then
+        echo Ошибка! У вас нет прав доступа к файлу 1!
+    fi
+    exit 2
+fi
+if [ ! -r "$2" ]; then
+    if echo "$3" | grep -Eq "^-v$"; then
+        echo Ошибка! У вас нет прав доступа к файлу 2!
+    fi
+    exit 2
+fi
+
 
 file1_data=$( cat $1 )
 file2_data=$( cat $2 )

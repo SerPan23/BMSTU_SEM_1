@@ -28,20 +28,34 @@ if [ ! -r "$2" ]; then
 fi
 
 
-file1_data=$( cat $1 )
-file2_data=$( cat $2 )
+# file1_data=$( cat $1 )
+# file2_data=$( cat $2 )
 
-file1_nums=''
-for word in $file1_data; do
-    # echo $word
-    if [[ "$word" =~ ^[-+]?[0-9]+$ ]]; then
-        file1_nums="$file1_nums $word"
-        # echo $file1_nums
-    fi
-done
+# file1_nums=''
+# for word in $file1_data; do
+#     # echo $word
+    # if [[ "$word" =~ ^[-+]?[0-9]+$ ]]; then
+    #     file1_nums="$file1_nums $word"
+    #     # echo $file1_nums
+    # fi
+# done
+
+flag=''
+
+myfile1=$(mktemp)
+DONE=false
+until $DONE ;do
+    read -r line || DONE=true
+    for word in $line; do 
+        if [[ "$word" =~ ^[-+]?[0-9]+$ ]]; then
+            flag='1'
+            echo "$word" >> "$myfile1"
+        fi
+    done
+done < $1
 
 
-if [ -z "$file1_nums" ]; then
+if [ -z $flag ]; then
     if echo "$3" | grep -Eq "^-v$"; then
         echo Ошибка! В файле 1 нет целых чисел
     fi
@@ -49,21 +63,37 @@ if [ -z "$file1_nums" ]; then
 fi
 
 
-file2_nums=''
-for word in $file2_data; do
-    if [[ "$word" =~ ^[-+]?[0-9]+$ ]]; then
-        file2_nums="$file2_nums $word"
-    fi
-done
+# file2_nums=''
+# for word in $file2_data; do
+#     if [[ "$word" =~ ^[-+]?[0-9]+$ ]]; then
+#         file2_nums="$file2_nums $word"
+#     fi
+# done
 
-if [ -z "$file2_nums" ]; then
+flag=''
+
+myfile2=$(mktemp)
+DONE=false
+until $DONE ;do
+    read -r line || DONE=true
+    for word in $line; do 
+        if [[ "$word" =~ ^[-+]?[0-9]+$ ]]; then
+            flag='1'
+            echo "$word" >> "$myfile2"
+        fi
+    done
+done < $2
+
+if [ -z $flag ]; then
     if echo "$3" | grep -Eq "^-v$"; then
         echo Ошибка! В файле 2 нет целых чисел
     fi
     exit 2
 fi
 
-if [ "$file1_nums" == "$file2_nums" ]; then
+
+
+if cmp -s "$myfile1" "$myfile2"; then
     if echo "$3" | grep -Eq "^-v$"; then
         echo Файлы совпадают
     fi
@@ -74,3 +104,15 @@ else
     fi
     exit 1
 fi
+
+# if [ "$file1_nums" == "$file2_nums" ]; then
+#     if echo "$3" | grep -Eq "^-v$"; then
+#         echo Файлы совпадают
+#     fi
+#     exit 0
+# else
+#     if echo "$3" | grep -Eq "^-v$"; then
+#         echo Файлы не совпадают
+#     fi
+#     exit 1
+# fi

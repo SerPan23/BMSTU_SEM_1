@@ -43,7 +43,7 @@ echo
 
 echo "$separator"
 echo Тест 5: В одном из файлов все ЧПТ в экспоненциальной форме \(Следовательно нужных нам нет\)
-bash ./comparator3.sh "./tests/file4.txt" "./tests/file3.txt" -v
+bash ./comparator3.sh "./tests/file4.txt" "./tests/file1.txt" -v
 echo Код возврата: "$?"
 echo "$separator"
 echo

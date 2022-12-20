@@ -48,6 +48,7 @@ until $DONE ;do
     for word in $line; do 
         if [[ "$word" =~ ^[+-]?[0-9]+(\.[0-9]+)?$ ]]; then
             flag='1'
+            # echo "$word"
             echo "$word" >> "$myfile1"
         fi
     done
@@ -69,6 +70,7 @@ fi
 #         file2_nums="$file2_nums $word"
 #     fi
 # done
+# echo "-----------"
 
 flag=''
 
@@ -79,6 +81,7 @@ until $DONE ;do
     for word in $line; do 
         if [[ "$word" =~ ^[+-]?[0-9]+(\.[0-9]+)?$ ]]; then
             flag='1'
+            # echo "$word"
             echo "$word" >> "$myfile2"
         fi
     done

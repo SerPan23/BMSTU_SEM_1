@@ -1,0 +1,7 @@
+My name is ABC.
+100
+
+book
+/etc/info.plist
+#100#
+int c;
